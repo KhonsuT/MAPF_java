@@ -24,13 +24,14 @@ class Node {
         return this.pPos;
     }
 
-    public int getF() {return this.g+this.f;}
+    public int getF() {return this.g+this.h;}
     public int getG() {return this.g;}
     public int getH() {return this.h;}
-    public int getCondition() {return this.condition};
+    public int getCondition() {return this.condition;}
 
     public void setG(int g) {this.g = g;}
     public void setH(int h) {this.h = h;}
+    public void setParentPos(int[] pPos) {this.pPos = pPos;}
 
 
 }
@@ -53,25 +54,49 @@ public class Astar {
         Node[][] gridN = new Node[grid.length][grid[0].length];
         for (int i = 0; i<gridN.length; i++) {
             for (int j = 0; j<gridN[0].length;j++) {
-                gridN[i][j] = new Node(new int[]{i,j}, new int[2], Integer.MAX_VALUE, CalculateDistance.findDist(new int[]{i,j}, destNode),grid[i][j]);
+                gridN[i][j] = new Node(new int[]{i,j}, new int[]{-1,-1}, Integer.MAX_VALUE, CalculateDistance.findDist(new int[]{i,j}, destNode),grid[i][j]);
             }
         }
         gridN[originNode[0]][originNode[1]].setG(0);
+        gridN[originNode[0]][originNode[1]].setParentPos(null);
         // priority queue
-        PriorityQueue<Node> pq = new PriorityQueue<>(Comparator.comparingInt((Node node)->node.getF()));
+        PriorityQueue<Node> pq = new PriorityQueue<>((node1,node2)->{
+            if(node1.getF()!= node2.getF()){
+                return Integer.compare(node1.getF(),node2.getF());
+            }
+            return Integer.compare(node1.getG(), node2.getG());
+        });
         pq.offer(gridN[originNode[0]][originNode[1]]);
+        // Set for visited Node
+        Set<Node> visited = new HashSet<>();
+
+        //Search
+        Node curNode = null;
         while (!pq.isEmpty()) {
-            Node curNode = pq.poll();
+            curNode = pq.poll();
+
+            if (curNode.getPos() == destNode) break;
+
+            if (visited.contains(curNode)) continue;
+            visited.add(curNode);
+
             int curF = curNode.getF();
             int curG = curNode.getG();
             int curH = curNode.getH();
 
             for (Node node: findNeighbor(curNode, gridN)) {
-                if
+                if (visited.contains(node)) continue;
+                node.setParentPos(curNode.getPos());
+                node.setG(curNode.getG()+1);
+                pq.offer(node);
             }
         }
 
-        return new ArrayList<>();
+        List<int[]> path = new ArrayList<>();
+        while (curNode.getParentPos()!=null) {
+            path.add(curNode.getPos());
+        }
+        return path;
     }
 
     private static List<Node> findNeighbor(Node node, Node[][] gridN) {
