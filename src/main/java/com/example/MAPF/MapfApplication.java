@@ -12,8 +12,12 @@ public class MapfApplication {
 		SpringApplication.run(MapfApplication.class, args);
 	}
 //	@GetMapping
-//	public static String hello() {
-//		return "Hello tmr";
+//	public static String getMapState() {
 //	}
+// post end points to add agents
+// post end points to add task to agents(i.e from curPos go to any pos checks if pos is valid non-obstacles)
+
+// put end points to update map state(remove/add obstacles)
+
 
 }

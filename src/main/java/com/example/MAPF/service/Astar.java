@@ -1,4 +1,6 @@
-package com.example.MAPF;
+package com.example.MAPF.service;
+
+import com.example.MAPF.util.CalculateDistance;
 
 import java.util.*;
 
@@ -32,6 +34,19 @@ class Node {
     public void setG(int g) {this.g = g;}
     public void setH(int h) {this.h = h;}
     public void setParentPos(int[] pPos) {this.pPos = pPos;}
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Node other = (Node) obj;
+        return Arrays.equals(this.pos, other.pos);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(this.pos); // Consistent with equals
+    }
 
 
 }
@@ -75,7 +90,7 @@ public class Astar {
         while (!pq.isEmpty()) {
             curNode = pq.poll();
 
-            if (curNode.getPos() == destNode) break;
+            if (Arrays.equals(curNode.getPos(),destNode)) break;
 
             if (visited.contains(curNode)) continue;
             visited.add(curNode);
@@ -85,17 +100,26 @@ public class Astar {
             int curH = curNode.getH();
 
             for (Node node: findNeighbor(curNode, gridN)) {
-                if (visited.contains(node)) continue;
-                node.setParentPos(curNode.getPos());
-                node.setG(curNode.getG()+1);
-                pq.offer(node);
+                if (!visited.contains(node)){
+                    int tG = curNode.getG()+1;
+                    if (tG< node.getG()){
+                        node.setParentPos(curNode.getPos());
+                        node.setG(curNode.getG()+1);
+                        pq.offer(node);
+                    }
+                }
+
             }
         }
 
+
         List<int[]> path = new ArrayList<>();
-        while (curNode.getParentPos()!=null) {
+        if(!Arrays.equals(curNode.getPos(),destNode)) return path;
+        while (curNode!=null) {
             path.add(curNode.getPos());
+            curNode = (curNode.getParentPos()==null)?null:gridN[curNode.getParentPos()[0]][curNode.getParentPos()[1]];
         }
+        Collections.reverse(path);
         return path;
     }
 
@@ -114,6 +138,6 @@ public class Astar {
     private static boolean isOutOfBound(Node[][] gridN, int row, int col) {
         int maxRow = gridN.length;
         int maxCol = gridN[0].length;
-        return (row<maxRow&&col<maxCol&&row>=0&&col>=0);
+        return (row<0 || col < 0 || row >= maxRow || col >= maxCol);
     }
 }

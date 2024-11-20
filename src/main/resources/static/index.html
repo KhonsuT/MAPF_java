@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map State</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <script src="/js/index.js"></script>
+</head>
+<body>
+<h1>Real-Time Map State</h1>
+<div id="map"></div>
+<div>
+    <button type="button" id="startButton" class="btn">Run</button>
+    <button type="button" id="resetButton" class="btn">Reset</button>
+</div>
+<div>
+    <form id="mapSizeForm" class="formStyle">
+        <div>
+            <label class="formLabel" for="width">Width</label>
+            <input class="formInput" type="number" id="width" name="width">
+        </div>
+        <div>
+            <label class="formLabel" for="height">Height</label>
+            <input class="formInput" type="number" id="height" name="height">
+        </div>
+        <button type="submit" class="btn"> UpdateMap</button>
+        <p id="mapCaption"></p>
+    </form>
+</div>
+</body>
+</html>

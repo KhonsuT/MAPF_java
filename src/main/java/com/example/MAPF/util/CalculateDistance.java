@@ -1,5 +1,4 @@
-package com.example.MAPF;
-import java.util.*;
+package com.example.MAPF.util;
 
 public class CalculateDistance {
     public static int findDist(int[] curNode, int[] destNode) {

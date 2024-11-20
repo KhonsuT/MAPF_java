@@ -1,0 +1,108 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f9;
+}
+#map {
+  display: grid;
+  gap: 2px;
+  margin: 20px auto;
+  width: fit-content;
+  background-color: #333;
+  padding: 5px;
+  border-radius: 10px;
+}
+.cell {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 30px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  border: 1px solid #666;
+}
+.cell.obstacle {
+  background-color: #402905; /* Red */
+}
+.cell.empty {
+  background-color: #ddd; /* Green */
+}
+.cell.number-1 {
+  background-color: #f0ad4e; /* Orange */
+}
+.cell.number-2 {
+  background-color: #d9534f; /* Dark Red */
+}
+.cell.number-3 {
+  background-color: #5bc0de; /* Blue */
+}
+.cell.number-4 {
+  background-color: #5bc085; /* Light Green */
+}
+.cell.number-5 {
+  background-color: #337ab7; /* Dark Blue */
+}
+.cell.number-6 {
+  background-color: #f7c6a7; /* Light Orange */
+}
+.cell.number-7 {
+  background-color: #f7b7b7; /* Light Pink */
+}
+.cell.number-8 {
+  background-color: #274e13; /* Light Gray */
+}
+.cell.number-9 {
+  background-color: #ff6347; /* Tomato */
+}
+
+.btn {
+  color: #fff;
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  font-weight:400;
+  line-height: 1.5;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid transparent;
+  font-size: .875rem;
+  border-radius: .2rem;
+  padding: .25rem .5rem;
+  margin-top: .25rem;
+  margin-bottom: .25rem;
+}
+
+.formLabel {
+  margin-bottom: .25rem;
+  display: inline-block;
+  align-self: flex-start;
+}
+
+.formInput {
+  width: 100%;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  margin:0.25rem;
+  align-self: flex-end;
+}
+
+.formStyle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.btn:hover {
+  background-color: #fff;
+  color: #0d6efd;
+}
