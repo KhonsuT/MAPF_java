@@ -1,20 +1,20 @@
 Author: Derek Chen
-## Decentralized Multi-Agent Path Finding Simulation
+# Decentralized Multi-Agent Path Finding Simulation
 This Project is a visualizer tool that I created to help me understand the concepts of multi-agent path finding in a warehouse env
 
-## Project includes
-# Visualizer
+# Project includes
+## Visualizer
 Visualizer is hosted on localhost:8080 with a few basic feature
-# Test
+## Test
 Astar path finding algo test cases
 
 
-##Have Fun 
+# Have Fun 
 Explore the possibility of robot movements! 
 
 
 
-## PathPlanningLogic
+# PathPlanningLogic
 
 1. Each Robot is initialized with 3 sets of tasks(random positions on the grid)
 2. Each Task has three levels of priority (LOW, MEDIUM, HIGH) and each bot completes them in order
@@ -25,9 +25,9 @@ Explore the possibility of robot movements!
 
 
 
-## Build
-# Spring Boot
+# Build
+## Spring Boot
 This project is written in spring boot, follow Maven standard build-run workflow
 
-# Requirements
+## Requirements
 JAVA 17
