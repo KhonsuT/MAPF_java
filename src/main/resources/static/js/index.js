@@ -92,7 +92,7 @@ function updateGrid(grid) {
     cornerCell.style.width = '20px'; // Adjust as needed
     headerRow.appendChild(cornerCell);
 
-    // Add column labels (1, 2, 3, ...)
+    // Add column labels (0, 1, 2, 3, ...)
     for (let col = 0; col < grid[0].length; col++) {
         const colLabel = document.createElement('div');
         colLabel.classList.add('cell', 'label'); // Optional 'label' class for styling

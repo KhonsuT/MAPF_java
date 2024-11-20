@@ -9,6 +9,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,8 +54,14 @@ public class MapController {
             int x = newAgent.get("pos")[0];
             int y = newAgent.get("pos")[1];
             int agentID = newAgent.get("agentID")[0];
-            mapEnv.addAgent(agentID, new Agent(new int[]{x,y},mapEnv,agentID));
-            return ResponseEntity.ok("Success");
+            if(x<mapEnv.getGrid().length&&y< mapEnv.getGrid()[0].length) {
+                mapEnv.addAgent(agentID, new Agent(new int[]{x,y},mapEnv,agentID));
+                return ResponseEntity.ok("Success");
+            }
+            else {
+                throw new InvalidParameterException("Incorrect Index");
+            }
+
         } catch (Exception e) {
             System.out.println(e);
         }

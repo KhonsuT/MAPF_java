@@ -13,6 +13,7 @@ public class Agent implements Runnable{
     List<int[]> history = new ArrayList<>();
     int agentSpeed = 10;
     int[] pos = new int[]{0,0};
+    int[] homePos = new int[]{0,0};
 
     public PriorityQueue<Task> getTasks() {
         return tasks;
@@ -24,6 +25,7 @@ public class Agent implements Runnable{
         this.pos = pos;
         this.map = map;
         this.agentID = agentID;
+        this.homePos = pos;
     }
     public Agent( int[] pos, MapEnv map, int agentID, int agentSpeed) {
         this.pos = pos;
@@ -75,30 +77,60 @@ public class Agent implements Runnable{
             System.err.println("No active tasks.");
             return;
         }
-        while (!tasks.isEmpty()) {
-            System.out.println("Agent "+agentID+" starts moving");
-            Task curTask = tasks.poll();
-            List<int[]> curTaskPath =  Astar.AstarAlgo(this.pos, curTask.targetLocation,this.map.getEmptyGrid());
+        try {
+            while (!tasks.isEmpty()) {
+                System.out.println("Agent "+agentID+" starts moving");
+                Task curTask = tasks.poll();
+                List<int[]> curTaskPath =  Astar.AstarAlgo(this.pos, curTask.targetLocation,this.map.getEmptyGrid());
+                if(!curTaskPath.isEmpty()) {
+                    curTask.state = TaskState.EXECUTING;
+                    int tries = 0;
+                    while(curTask.state!=TaskState.FINISHED && curTask.state!=TaskState.CANCELED){
+                        if(tries>3) {
+                            curTask.state = TaskState.ONHOLD;
+                            curTask.priority = TaskPriority.LOW;
+                            tasks.offer(curTask);
+                            break;
+                        }
+                        if(executePath(curTaskPath)){
+                            curTask.state = TaskState.FINISHED;
+                        }
+                        else {
+                            curTaskPath = Astar.AstarAlgo(this.pos, curTask.targetLocation, this.map.getGrid());
+                            System.out.println("Updating Route");
+                            Thread.sleep(1000); //pausing to see if a better path is available
+                            tries++;
+                        }
+                    }
+                }
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        // return to home pos
+        try {
+            List<int[]> curTaskPath =  Astar.AstarAlgo(this.pos, this.homePos, this.map.getEmptyGrid());
             if(!curTaskPath.isEmpty()) {
-                curTask.state = TaskState.EXECUTING;
                 int tries = 0;
-                while(curTask.state!=TaskState.FINISHED && curTask.state!=TaskState.CANCELED){
+                while(this.pos!=this.homePos){
                     if(tries>3) {
-                        curTask.state = TaskState.ONHOLD;
-                        curTask.priority = TaskPriority.LOW;
-                        tasks.offer(curTask);
+                        System.out.println("Agent: "+ agentID + " unable to return to home position");
                         break;
                     }
-                    if(executePath(curTaskPath)){
-                        curTask.state = TaskState.FINISHED;
+                    if (executePath(curTaskPath)) {
+                        System.out.println("Agent: " + agentID + " finished all tasks and returned home");
+                        break;
                     }
                     else {
-                        curTaskPath = Astar.AstarAlgo(this.pos, curTask.targetLocation, this.map.getGrid());
+                        curTaskPath = Astar.AstarAlgo(this.pos, this.homePos, this.map.getGrid());
                         System.out.println("Updating Route");
+                        Thread.sleep(1000);
                         tries++;
                     }
                 }
             }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 }
